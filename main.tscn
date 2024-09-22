@@ -1,0 +1,126 @@
+[gd_scene load_steps=14 format=3 uid="uid://d0yo2j28yqju6"]
+
+[ext_resource type="Script" path="res://code_input.gd" id="1_ms5sj"]
+[ext_resource type="Texture2D" uid="uid://ch5tjrtsnospq" path="res://art/left_arrow.png" id="2_8v21e"]
+[ext_resource type="Texture2D" uid="uid://btwoohbmu6i7f" path="res://art/a_button.png" id="2_w4ysd"]
+[ext_resource type="Texture2D" uid="uid://dp56g82xttjf5" path="res://art/up_arrow.png" id="3_hybgj"]
+[ext_resource type="Texture2D" uid="uid://uxebso71e0io" path="res://art/b_button.png" id="3_pfbag"]
+[ext_resource type="Texture2D" uid="uid://dbglmul6cghxd" path="res://art/down_arrow.png" id="4_8t04k"]
+[ext_resource type="Texture2D" uid="uid://dllnxgi3h71o7" path="res://art/logo.png" id="5_skiep"]
+[ext_resource type="Texture2D" uid="uid://ch5bc4rkh5psy" path="res://art/right_arrow.png" id="7_1lom1"]
+[ext_resource type="Texture2D" uid="uid://dk4k6mrgdk6t8" path="res://art/start_button.png" id="8_r5t3l"]
+[ext_resource type="Script" path="res://input_prompt.gd" id="10_hijvk"]
+[ext_resource type="Texture2D" uid="uid://doq6lodl7igis" path="res://art/logo_win.png" id="10_oepaw"]
+[ext_resource type="Script" path="res://status_label.gd" id="11_dvctm"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_jffxr"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_w4ysd")
+}],
+"loop": true,
+"name": &"A",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_pfbag")
+}],
+"loop": true,
+"name": &"B",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_8t04k")
+}],
+"loop": true,
+"name": &"down",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_skiep")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_8v21e")
+}],
+"loop": true,
+"name": &"left",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("7_1lom1")
+}],
+"loop": true,
+"name": &"right",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("8_r5t3l")
+}],
+"loop": true,
+"name": &"start",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_hybgj")
+}],
+"loop": true,
+"name": &"up",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 0.5,
+"texture": ExtResource("5_skiep")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_oepaw")
+}],
+"loop": true,
+"name": &"win",
+"speed": 5.0
+}]
+
+[node name="Main" type="Node"]
+
+[node name="CodeInput" type="Node" parent="."]
+script = ExtResource("1_ms5sj")
+
+[node name="InputTimer" type="Timer" parent="CodeInput"]
+
+[node name="InputPrompt" type="AnimatedSprite2D" parent="."]
+position = Vector2(587, 458)
+scale = Vector2(2, 2)
+sprite_frames = SubResource("SpriteFrames_jffxr")
+animation = &"right"
+frame_progress = 0.409864
+script = ExtResource("10_hijvk")
+
+[node name="StatusLabel" type="Label" parent="."]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -20.0
+offset_right = 20.0
+offset_bottom = 23.0
+grow_horizontal = 2
+theme_override_font_sizes/font_size = 70
+text = "ENTER CODE"
+horizontal_alignment = 1
+script = ExtResource("11_dvctm")
+
+[connection signal="code_advanced" from="CodeInput" to="StatusLabel" method="_on_code_input_code_advanced"]
+[connection signal="code_completed" from="CodeInput" to="InputPrompt" method="_on_code_input_code_completed"]
+[connection signal="code_completed" from="CodeInput" to="StatusLabel" method="_on_code_input_code_completed"]
+[connection signal="code_failed" from="CodeInput" to="StatusLabel" method="_on_code_input_code_failed"]
+[connection signal="timeout" from="CodeInput/InputTimer" to="CodeInput" method="_on_input_timer_timeout"]
